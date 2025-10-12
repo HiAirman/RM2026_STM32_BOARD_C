@@ -51,3 +51,36 @@ int32_t IMU::gyro_y_get() {
 int32_t IMU::gyro_z_get() {
   return IMU::gyro_data[2];
 }
+
+//private 区域
+
+void IMU::gyro_angle_integration() {
+  raw_angles[0] += gyro_data[1] * integrate_time;
+  raw_angles[1] += gyro_data[0] * integrate_time;
+    //不做限制于0-360方便滤波
+}
+void IMU::gyro_angle_process() {
+  //filter
+  temp_angles[0] = (previously_temp_angles[0] + gyro_angle_filter_weight * raw_angles[0]) / (1 + gyro_angle_filter_weight);
+  temp_angles[1] = (previously_temp_angles[1] + gyro_angle_filter_weight * raw_angles[1]) / (1 + gyro_angle_filter_weight);
+
+  previously_temp_angles[0] = temp_angles[0];//记录原先值
+  previously_temp_angles[1] = temp_angles[1];
+
+  //regular
+  if (temp_angles[0] > 0) {
+    processed_angles[0] = temp_angles[0] - fmod(temp_angles[0], 360);
+  } else {
+    processed_angles[0] = 360.0 + fmod(temp_angles[0], 360);
+  }
+
+  if (temp_angles[1] > 0) {
+    processed_angles[1] = temp_angles[1] - fmod(temp_angles[1], 360);
+  } else {
+    processed_angles[1] = 360.0 + fmod(temp_angles[1], 360);
+  }
+}
+
+
+
+

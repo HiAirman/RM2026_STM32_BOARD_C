@@ -3,7 +3,7 @@
 //
 
 #include "bmi088.h"
-
+#include "spi.h"
 void bmi088_init(void) {
   // Soft Reset ACCEL
   BMI088_ACCEL_NS_L();

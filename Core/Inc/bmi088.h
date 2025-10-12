@@ -2,13 +2,20 @@
 // Created by HiAir on 2025/10/12.
 //
 
-#ifndef RM_C_BOARD_TEST_DEV_IMU_H
-#define RM_C_BOARD_TEST_DEV_IMU_H
+
+
+#ifndef RM_C_BOARD_TEST_DEV_BMI088_H
+#define RM_C_BOARD_TEST_DEV_BMI088_H
 
 #include "main.h"
-#include "spi.h"
-#include "tim.h"
-#include "gpio.h"
+
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
 
 //初始化
 void bmi088_init(void);
@@ -33,10 +40,15 @@ void BMI088_GYRO_NS_H(void);
 void bmi088_accel_write_single_reg(uint8_t reg, uint8_t data);
 //gyr写入单个寄存器
 void bmi088_gyro_write_single_reg(uint8_t reg, uint8_t data);
+  //acc读取
 
-//acc读取
-void bmi088_accel_read_reg(uint8_t reg, uint8_t *rx_data, uint8_t length);
-//gyr读取
-void bmi088_gyro_read_reg(uint8_t reg, uint8_t *rx_data, uint8_t length);
+  void bmi088_accel_read_reg(uint8_t reg, uint8_t *rx_data, uint8_t length);
+  //gyr读取
+  void bmi088_gyro_read_reg(uint8_t reg, uint8_t *rx_data, uint8_t length);
 
-#endif //RM_C_BOARD_TEST_DEV_IMU_H
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif //RM_C_BOARD_TEST_DEV_BMI088_H

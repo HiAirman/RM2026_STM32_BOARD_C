@@ -48,6 +48,8 @@
 
 /* USER CODE BEGIN PV */
 
+uint32_t accel_data[3];
+uint32_t gyro_data[3];
 
 /* USER CODE END PV */
 

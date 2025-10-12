@@ -3,10 +3,9 @@
 //
 
 #include "IMU.h"
-
+#include <math.h>
 #include "bmi088.h"
 
-#include <tgmath.h>
 
 void IMU::acc_calculate() {
   uint8_t raw_range;

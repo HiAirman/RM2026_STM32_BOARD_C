@@ -10,6 +10,9 @@
 #include "tim.h"
 #include "gpio.h"
 
+//初始化
+void bmi088_init(void);
+
 //写入一个byte的数据
 void bmi088_write_byte(uint8_t tx_data);
 

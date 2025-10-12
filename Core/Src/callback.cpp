@@ -7,8 +7,8 @@
 
 IMU imu;
 
-extern uint32_t accel_data[3];
-extern uint32_t gyro_data[3];
+extern int32_t accel_data[3];
+extern int32_t gyro_data[3];
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
   if (htim->Instance == TIM6) {

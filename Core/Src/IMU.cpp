@@ -33,21 +33,21 @@ void IMU::gyro_calculate() {
 }
 
 //getter
-uint32_t IMU::acc_x_get() {
+int32_t IMU::acc_x_get() {
   return IMU::acc_data[0];
 }
-uint32_t IMU::acc_y_get() {
+int32_t IMU::acc_y_get() {
   return IMU::acc_data[1];
 }
-uint32_t IMU::acc_z_get() {
+int32_t IMU::acc_z_get() {
   return IMU::acc_data[2];
 }
-uint32_t IMU::gyro_x_get() {
+int32_t IMU::gyro_x_get() {
   return IMU::gyro_data[0];
 }
-uint32_t IMU::gyro_y_get() {
+int32_t IMU::gyro_y_get() {
   return IMU::gyro_data[1];
 }
-uint32_t IMU::gyro_z_get() {
+int32_t IMU::gyro_z_get() {
   return IMU::gyro_data[2];
 }

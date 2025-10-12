@@ -25,4 +25,15 @@ void BMI088_ACCEL_NS_H(void);
 void BMI088_GYRO_NS_L(void);
 void BMI088_GYRO_NS_H(void);
 
+//第二次打包
+//acc写入单个寄存器
+void bmi088_accel_write_single_reg(uint8_t reg, uint8_t data);
+//gyr写入单个寄存器
+void bmi088_gyro_write_single_reg(uint8_t reg, uint8_t data);
+
+//acc读取
+void bmi088_accel_read_reg(uint8_t reg, uint8_t *rx_data, uint8_t length);
+//gyr读取
+void bmi088_gyro_read_reg(uint8_t reg, uint8_t *rx_data, uint8_t length);
+
 #endif //RM_C_BOARD_TEST_DEV_IMU_H

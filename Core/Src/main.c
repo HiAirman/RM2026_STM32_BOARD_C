@@ -25,7 +25,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
-#include "imu.h"
+#include "bmi088.h"
 
 /* USER CODE END Includes */
 

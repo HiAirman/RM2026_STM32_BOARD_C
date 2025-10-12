@@ -2,7 +2,7 @@
 // Created by HiAir on 2025/10/12.
 //
 
-#include "imu.h"
+#include "bmi088.h"
 
 void bmi088_init(void) {
   // Soft Reset ACCEL

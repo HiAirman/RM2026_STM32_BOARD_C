@@ -8,6 +8,7 @@
 #define RM_C_BOARD_TEST_DEV_BMI088_H
 
 #include "main.h"
+#include <stdint.h>
 
 
 

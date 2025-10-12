@@ -16,15 +16,15 @@ public:
   void gyro_calculate();
 
   //getter & setter
-  uint32_t acc_x_get();
-  uint32_t acc_y_get();
-  uint32_t acc_z_get();
-  uint32_t gyro_x_get();
-  uint32_t gyro_y_get();
-  uint32_t gyro_z_get();
+  int32_t acc_x_get();
+  int32_t acc_y_get();
+  int32_t acc_z_get();
+  int32_t gyro_x_get();
+  int32_t gyro_y_get();
+  int32_t gyro_z_get();
 private:
-  uint32_t acc_data[3];
-  uint32_t gyro_data[3];
+  int32_t acc_data[3];
+  int32_t gyro_data[3];
 };
 
 #endif //RM_C_BOARD_TEST_DEV_IMU_H

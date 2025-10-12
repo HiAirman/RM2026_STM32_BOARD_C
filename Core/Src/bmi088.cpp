@@ -4,6 +4,8 @@
 
 #include "bmi088.h"
 #include "spi.h"
+#include "stm32f4xx_hal.h"
+
 void bmi088_init(void) {
   // Soft Reset ACCEL
   BMI088_ACCEL_NS_L();
@@ -28,26 +30,26 @@ void bmi088_init(void) {
 //写入一个byte的数据
 void bmi088_write_byte(uint8_t tx_data) {
   HAL_SPI_Transmit(&hspi1, &tx_data, 1, 1000);
-  while (HAL_SPI_GetState(&hspi1) == HAL_SPI_STATE_BUSY_TX)
-    ;
+
+  //HAL_SPI_Transmit_IT(&hspi1, &tx_data, 1);
 }
 
 //读取一个byte的数据 存至rx_data中
 void bmi088_read_byte(uint8_t* rx_data, uint8_t length) {
   HAL_SPI_Receive(&hspi1, rx_data, length, 1000);
-  while (HAL_SPI_GetState(&hspi1) == HAL_SPI_STATE_BUSY_RX)
-    ;
+
+  // HAL_SPI_Receive_IT(&hspi1, rx_data, length);
 }
 
 //写入一个byte至寄存器
 void bmi088_write_reg(uint8_t reg, uint8_t data) {
   reg = reg & 0x7F;
-  HAL_SPI_Transmit(&hspi1, &reg, 1, 1000);
-  while (HAL_SPI_GetState(&hspi1) == HAL_SPI_STATE_BUSY_TX)
-    ;
-  HAL_SPI_Transmit(&hspi1, &data, 1, 1000);
-  while (HAL_SPI_GetState(&hspi1) == HAL_SPI_STATE_BUSY_TX)
-    ;
+  // HAL_SPI_Transmit(&hspi1, &reg, 1, 1000);
+  bmi088_write_byte(reg);
+  // HAL_SPI_Transmit_IT(&hspi1, &reg, 1);
+  // HAL_SPI_Transmit(&hspi1, &data, 1, 1000);
+  bmi088_write_byte(data);
+  // HAL_SPI_Transmit_IT(&hspi1, &data, 1);
 }
 
 //片选CS
@@ -90,9 +92,9 @@ void bmi088_gyro_write_single_reg(uint8_t reg, uint8_t data) {
 void bmi088_accel_read_reg(uint8_t reg, uint8_t* rx_data, uint8_t length) {
   BMI088_GYRO_NS_H();
   BMI088_ACCEL_NS_L();
-
-  bmi088_write_byte(reg & 0xFF);
-  bmi088_read_byte(NULL, 1);
+  uint8_t a;
+  bmi088_write_byte(reg | 0x80);
+  bmi088_read_byte(&a, 1);
   bmi088_read_byte(rx_data, length);
 
   BMI088_ACCEL_NS_H();
@@ -102,7 +104,7 @@ void bmi088_gyro_read_reg(uint8_t reg, uint8_t* rx_data, uint8_t length) {
   BMI088_ACCEL_NS_H();
   BMI088_GYRO_NS_L();
 
-  bmi088_write_byte(reg & 0xFF);
+  bmi088_write_byte(reg | 0x80);
   bmi088_read_byte(rx_data, length);
 
   BMI088_GYRO_NS_H();

@@ -9,6 +9,12 @@
 uint8_t raw_range = 0;
 uint8_t rx_acc_data[6];
 uint8_t rx_gyro_data[6];
+
+//initialization
+void gyro_initialization(void) {
+  ;
+}
+
 void IMU::acc_calculate() {
   //bmi088_accel_write_single_reg(0x41, 0x01);
 
@@ -54,33 +60,61 @@ int32_t IMU::gyro_z_get() {
 
 //private 区域
 
-void IMU::gyro_angle_integration() {
-  raw_angles[0] += gyro_data[1] * integrate_time;
-  raw_angles[1] += gyro_data[0] * integrate_time;
-    //不做限制于0-360方便滤波
-}
-void IMU::gyro_angle_process() {
-  //filter
-  temp_angles[0] = (previously_temp_angles[0] + gyro_angle_filter_weight * raw_angles[0]) / (1 + gyro_angle_filter_weight);
-  temp_angles[1] = (previously_temp_angles[1] + gyro_angle_filter_weight * raw_angles[1]) / (1 + gyro_angle_filter_weight);
-
-  previously_temp_angles[0] = temp_angles[0];//记录原先值
-  previously_temp_angles[1] = temp_angles[1];
-
-  //regular
-  if (temp_angles[0] > 0) {
-    processed_angles[0] = temp_angles[0] - fmod(temp_angles[0], 360);
-  } else {
-    processed_angles[0] = 360.0 + fmod(temp_angles[0], 360);
-  }
-
-  if (temp_angles[1] > 0) {
-    processed_angles[1] = temp_angles[1] - fmod(temp_angles[1], 360);
-  } else {
-    processed_angles[1] = 360.0 + fmod(temp_angles[1], 360);
+  //读取
+void IMU::read_data() {
+  for (int i = 0; i < 3; ++i) {
+    raw_acceleration[i] = (int16_t)(rx_acc_data[1] << 8 | rx_acc_data[0]) * 1000.f * 1.5f * pow(2, (raw_range + 1)) / 32768.f;
+    raw_anglar_velocity[i] = (int16_t)(rx_gyro_data[2 * i + 1] << 8 | rx_gyro_data[2 * i]) * 1000.f / pow(2, (raw_range - 1)) / 32768.f;
   }
 }
 
+
+  //计算
+void IMU::gyro_filter() {
+  for (int i = 0; i < 3; ++i) {
+    filtered_angular_velocity[i] = (filtered_angular_velocity[i] + gyro_filter_weight * raw_anglar_velocity[i]) / (gyro_filter_weight + 1);
+  }
+}
+
+void IMU::gyro_vector_calculate() {
+  //角速度矢量
+  float angular_velocity[3];
+  const float degree_to_rad = 3.14159265 / 180;
+  for (int i = 0; i < 3; ++i) {
+    angular_velocity[i] = filtered_angular_velocity[i] * degree_to_rad;
+  }
+  //叉乘
+  float unnormalized_vector[3];
+  unnormalized_vector[0] = estimated_vector[0] + angular_velocity[1] * estimated_vector[2] - angular_velocity[2] * estimated_vector[1];
+  unnormalized_vector[1] = estimated_vector[1] + angular_velocity[2] * estimated_vector[0] - angular_velocity[0] * estimated_vector[2];
+  unnormalized_vector[2] = estimated_vector[2] + angular_velocity[0] * estimated_vector[1] - angular_velocity[1] * estimated_vector[0];
+  //归一化
+  vector_normalization(unnormalized_vector);
+  //赋值
+  for (int i = 0; i < 3; ++i) {
+    gyro_vector[i] = unnormalized_vector[i];
+  }
+}
+
+void IMU::accel_vector_calculate() {
+  //存下加速度方便归一化
+  float unnormalized_vector[3];
+  //归一化
+  vector_normalization(unnormalized_vector);
+  //赋值
+  for (int i = 0; i < 3; ++i) {
+    accel_vector[i] = unnormalized_vector[i];
+  }
+}
+
+
+
+void IMU::vector_normalization(float* vector) {
+  float length = sqrt(vector[0]*vector[0] + vector[1]*vector[1] + vector[2]*vector[2]);
+  for (int i = 0; i < 3; i++) {
+    vector[0] = vector[0] / length;
+  }
+}
 
 
 

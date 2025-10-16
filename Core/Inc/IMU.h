@@ -12,6 +12,12 @@
 
 class IMU {
 public:
+  //数值初始化：
+  void imu_initialization(void);
+  //已打包解算程序
+  void imu_calculate(void);
+
+  //outdated
   void acc_calculate();
   void gyro_calculate();
 
@@ -26,28 +32,41 @@ public:
 
 private:
 //私有方法
-  //数值初始化：赋值raw_angles, previously_temp_anlgles
-  void gyro_initialization(void);
-  //角速度积分得到角度
-  void gyro_angle_integration(void);
-  //角度滤波与正规化
-  void gyro_angle_process(void);
-  //解算地面矢量R
+  //读取
+  void read_data(void);
+  //计算
+  void gyro_filter(void);
+  void gyro_vector_calculate(void);
+  void accel_vector_calculate(void);
+  void weighted_average(void);
+
+  //工具函数
+  void vector_normalization(float *vector);
 
 //私有变量
+  //outdated
   int32_t acc_data[3] = {0};
   int32_t gyro_data[3] = {0};
 
   //积分时间
   const float integrate_time = 1.0 / 1000.0;
   //滤波常数
-  const float gyro_angle_filter_weight = 0.3;
+  const float gyro_filter_weight = 0.3;
 
-  //角度值 Axz Ayz 顺序
-  float raw_angles[2];
-  float previously_temp_angles[2];
-  float temp_angles[2];
-  float processed_angles[2];
+  //加速度值mg
+  float raw_acceleration[3];
+
+  //角速度值  x y z 顺序
+  float raw_anglar_velocity[3];
+  float filtered_angular_velocity[3];
+
+  //vectors
+  float estimated_vector[3];//指向天
+
+  float gyro_vector[3];
+  float accel_vector[3];
+
+
 
   //
 

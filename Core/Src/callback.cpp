@@ -5,10 +5,10 @@
 #include "main.h"
 #include "IMU.h"
 
-IMU imu;
 
 extern int32_t accel_data[3];
 extern int32_t gyro_data[3];
+extern float roll, pitch;
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
   if (htim->Instance == TIM6) {
@@ -20,6 +20,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
     gyro_data[0] = imu.gyro_x_get();
     gyro_data[1] = imu.gyro_y_get();
     gyro_data[2] = imu.gyro_z_get();
+    imu.imu_calculate();
+    roll = imu.get_roll();
+    pitch = imu.get_pitch();
   }
 }
 

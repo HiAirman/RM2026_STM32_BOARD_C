@@ -10,6 +10,15 @@
 #include "tim.h"
 #include "gpio.h"
 
+#ifdef __cplusplus
+extern "C" {
+  #endif
+void imu_init(void);
+#ifdef __cplusplus
+}
+  #endif
+
+
 class IMU {
 public:
   //数值初始化：
@@ -28,6 +37,8 @@ public:
   int32_t gyro_x_get();
   int32_t gyro_y_get();
   int32_t gyro_z_get();
+  float get_roll();
+  float get_pitch();
 
 
 private:
@@ -49,24 +60,26 @@ private:
   //outdated
   int32_t acc_data[3] = {0};
   int32_t gyro_data[3] = {0};
+  //实时更新的解算值 单位 °
+  float pitch, roll;
 
-  //积分时间
+
+  //积分时间 单位s
   const float integrate_time = 1.0 / 1000.0;
   //滤波常数
   const float gyro_filter_weight = 0.3;
   //gyro_vector加权平均权重
   const float average_weight_gyro = 0.5;
 
-  //加速度值mg
+  //加速度值 单位 mg
   float raw_acceleration[3];
 
-  //角速度值  x y z 顺序
+  //角速度值  x y z 顺序 单位 °/s
   float raw_anglar_velocity[3];
   float filtered_angular_velocity[3];
 
   //vectors
   float estimated_vector[3];//指向天
-
   float gyro_vector[3];
   float accel_vector[3];
 
@@ -77,5 +90,7 @@ private:
 
 
 };
+
+IMU imu;
 
 #endif //RM_C_BOARD_TEST_DEV_IMU_H

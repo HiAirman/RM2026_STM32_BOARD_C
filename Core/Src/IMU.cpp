@@ -16,8 +16,15 @@ void imu_init() {
 
 
 //initialization
-void gyro_initialization(void) {
-  ;
+void IMU::imu_initialization(void) {
+  read_data();
+  accel_vector_calculate();
+  for (int i = 0; i < 3; ++i) {
+    estimated_vector[i] = accel_vector[i];
+  }
+  for (int i = 0; i < 3; ++i) {
+    filtered_angular_velocity[i] = raw_anglar_velocity[i];
+  }
 }
 //打包解算函数
 void IMU::imu_calculate() {
@@ -121,6 +128,9 @@ void IMU::gyro_vector_calculate() {
 void IMU::accel_vector_calculate() {
   //存下加速度方便归一化
   float unnormalized_vector[3];
+  for (int i = 0; i < 3; ++i) {
+    unnormalized_vector[i] = raw_acceleration[i];
+  }
   //归一化
   vector_normalization(unnormalized_vector);
   //赋值

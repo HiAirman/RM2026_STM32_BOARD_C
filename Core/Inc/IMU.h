@@ -13,7 +13,9 @@
 #ifdef __cplusplus
 extern "C" {
   #endif
+
 void imu_init(void);
+
 #ifdef __cplusplus
 }
   #endif
@@ -46,9 +48,13 @@ private:
   //读取
   void read_data(void);
   //计算
+  //滤波
   void gyro_filter(void);
+  //按角速度旋转estimated矢量得到天空矢量
   void gyro_vector_calculate(void);
+  //通过加速度计算天空矢量
   void accel_vector_calculate(void);
+  //加权平均
   void weighted_average(void);
   //输出
   void output_angles(void);
@@ -76,10 +82,10 @@ private:
 
   //角速度值  x y z 顺序 单位 °/s
   float raw_anglar_velocity[3];
-  float filtered_angular_velocity[3];
+  float filtered_angular_velocity[3];//需要初始化
 
-  //vectors
-  float estimated_vector[3];//指向天
+  //vectors指向天
+  float estimated_vector[3];//需要初始化
   float gyro_vector[3];
   float accel_vector[3];
 

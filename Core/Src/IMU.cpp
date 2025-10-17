@@ -146,8 +146,8 @@ void IMU::weighted_average() {
 }
 
 void IMU::output_angles() {
-  roll = - atan2(estimated_vector[1], estimated_vector[2]); //-atan2(y,z)
-  pitch = - atan2(estimated_vector[0], sqrt(pow(estimated_vector[1],2) + pow(estimated_vector[2], 2))); //-atan2(x,(y^2 + z^2)^(1/2))
+  roll = - (float)atan2(estimated_vector[1], estimated_vector[2]); //-atan2(y,z)
+  pitch = - (float)atan2(estimated_vector[0], sqrt(pow(estimated_vector[1],2) + pow(estimated_vector[2], 2))); //-atan2(x,(y^2 + z^2)^(1/2))
 }
 
 
@@ -160,5 +160,6 @@ void IMU::vector_normalization(float* vector) {
   }
 }
 
+IMU imu;
 
 

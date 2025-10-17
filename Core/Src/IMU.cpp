@@ -9,12 +9,27 @@
 uint8_t raw_range = 0;
 uint8_t rx_acc_data[6];
 uint8_t rx_gyro_data[6];
+//c调用初始化函数
+void imu_init() {
+  imu.imu_initialization();
+}
+
 
 //initialization
 void gyro_initialization(void) {
   ;
 }
+//打包解算函数
+void IMU::imu_calculate() {
+  read_data();
+  gyro_filter();
+  gyro_vector_calculate();
+  accel_vector_calculate();
+  weighted_average();
+  output_angles();
+}
 
+//outdated
 void IMU::acc_calculate() {
   //bmi088_accel_write_single_reg(0x41, 0x01);
 
@@ -26,7 +41,7 @@ void IMU::acc_calculate() {
   IMU::acc_data[1] = (int16_t)(rx_acc_data[3] << 8 | rx_acc_data[2]) * 1000.f * 1.5f * pow(2, (raw_range + 1)) / 32768.f;//Y
   IMU::acc_data[2] = (int16_t)(rx_acc_data[5] << 8 | rx_acc_data[4]) * 1000.f * 1.5f * pow(2, (raw_range + 1)) / 32768.f;//Z
 }
-
+//outdated
 void IMU::gyro_calculate() {
 
   bmi088_gyro_read_reg(0x0F, &raw_range, 1);
@@ -57,8 +72,15 @@ int32_t IMU::gyro_y_get() {
 int32_t IMU::gyro_z_get() {
   return IMU::gyro_data[2];
 }
+float IMU::get_pitch() {
+  return pitch;
+}
+float IMU::get_roll() {
+  return roll;
+}
 
 //private 区域
+
 
   //读取
 void IMU::read_data() {
@@ -114,7 +136,8 @@ void IMU::weighted_average() {
 }
 
 void IMU::output_angles() {
-
+  roll = - atan2(estimated_vector[1], estimated_vector[2]); //-atan2(y,z)
+  pitch = - atan2(estimated_vector[0], sqrt(pow(estimated_vector[1],2) + pow(estimated_vector[2], 2))); //-atan2(x,(y^2 + z^2)^(1/2))
 }
 
 

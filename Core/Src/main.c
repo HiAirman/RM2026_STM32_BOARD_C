@@ -26,6 +26,7 @@
 /* USER CODE BEGIN Includes */
 
 #include "bmi088.h"
+#include "IMU.h"
 
 /* USER CODE END Includes */
 
@@ -50,6 +51,7 @@
 
 int32_t accel_data[3];
 int32_t gyro_data[3];
+float roll, pitch;
 
 /* USER CODE END PV */
 
@@ -97,6 +99,7 @@ int main(void)
   MX_TIM6_Init();
   /* USER CODE BEGIN 2 */
   bmi088_init();
+  imu_init();
   HAL_TIM_Base_Start_IT(&htim6);
   /* USER CODE END 2 */
 

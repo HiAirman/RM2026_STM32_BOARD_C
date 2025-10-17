@@ -51,7 +51,8 @@
 
 int32_t accel_data[3];
 int32_t gyro_data[3];
-float roll, pitch;
+float roll = 0;
+float pitch = 0;
 
 /* USER CODE END PV */
 

@@ -12,15 +12,15 @@
 
 #ifdef __cplusplus
 extern "C" {
-  #endif
+#endif //__cplusplus
 
 void imu_init(void);
 
 #ifdef __cplusplus
 }
-  #endif
+#endif //__cplusplus
 
-
+#ifdef __cplusplus
 class IMU {
 public:
   //数值初始化：
@@ -67,7 +67,8 @@ private:
   int32_t acc_data[3] = {0};
   int32_t gyro_data[3] = {0};
   //实时更新的解算值 单位 °
-  float pitch, roll;
+  float pitch = 1;
+  float roll = 1;
 
 
   //积分时间 单位s
@@ -97,6 +98,8 @@ private:
 
 };
 
-IMU imu;
+extern IMU imu;
+
+#endif //__cplusplus
 
 #endif //RM_C_BOARD_TEST_DEV_IMU_H

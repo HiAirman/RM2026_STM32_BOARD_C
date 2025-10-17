@@ -107,6 +107,17 @@ void IMU::accel_vector_calculate() {
   }
 }
 
+void IMU::weighted_average() {
+  for (int i = 0; i < 3; ++i) {
+    estimated_vector[i] = (1 - average_weight_gyro) * accel_vector[i] + average_weight_gyro * gyro_vector[i];
+  }
+}
+
+void IMU::output_angles() {
+
+}
+
+
 
 
 void IMU::vector_normalization(float* vector) {

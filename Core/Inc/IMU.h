@@ -39,6 +39,8 @@ private:
   void gyro_vector_calculate(void);
   void accel_vector_calculate(void);
   void weighted_average(void);
+  //输出
+  void output_angles(void);
 
   //工具函数
   void vector_normalization(float *vector);
@@ -52,6 +54,8 @@ private:
   const float integrate_time = 1.0 / 1000.0;
   //滤波常数
   const float gyro_filter_weight = 0.3;
+  //gyro_vector加权平均权重
+  const float average_weight_gyro = 0.5;
 
   //加速度值mg
   float raw_acceleration[3];

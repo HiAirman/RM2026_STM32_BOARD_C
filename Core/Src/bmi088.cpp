@@ -25,6 +25,7 @@ void bmi088_init(void) {
   bmi088_write_reg(0x7D, 0x04); // Write 0x04 to ACC_PWR_CTRL(0x7D)
   HAL_Delay(1);
   BMI088_ACCEL_NS_H();
+  HAL_Delay(100);
 }
 
 //写入一个byte的数据

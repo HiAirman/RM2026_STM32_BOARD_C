@@ -121,9 +121,9 @@ void IMU::gyro_vector_calculate() {
   }
   //叉乘
   float unnormalized_vector[3];
-  unnormalized_vector[0] = estimated_vector[0] + angular_velocity[1] * estimated_vector[2] - angular_velocity[2] * estimated_vector[1];
-  unnormalized_vector[1] = estimated_vector[1] + angular_velocity[2] * estimated_vector[0] - angular_velocity[0] * estimated_vector[2];
-  unnormalized_vector[2] = estimated_vector[2] + angular_velocity[0] * estimated_vector[1] - angular_velocity[1] * estimated_vector[0];
+  unnormalized_vector[0] = estimated_vector[0] + (angular_velocity[1] * estimated_vector[2] - angular_velocity[2] * estimated_vector[1]) * integrate_time;
+  unnormalized_vector[1] = estimated_vector[1] + (angular_velocity[2] * estimated_vector[0] - angular_velocity[0] * estimated_vector[2]) * integrate_time;
+  unnormalized_vector[2] = estimated_vector[2] + (angular_velocity[0] * estimated_vector[1] - angular_velocity[1] * estimated_vector[0]) * integrate_time;
   //归一化
   vector_normalization(unnormalized_vector);
   //赋值

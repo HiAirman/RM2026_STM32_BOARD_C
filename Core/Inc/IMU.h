@@ -75,9 +75,9 @@ private:
   //积分时间 单位s
   const float integrate_time = 1.0 / 1000.0;
   //滤波常数
-  const float gyro_filter_weight = 0.005;
+  const float gyro_filter_weight = 0.0005;
   //gyro_vector加权平均权重
-  const float average_weight_gyro = 0.5;
+  const float average_weight_gyro = 0.7;
 
   //加速度值 单位 mg
   int32_t raw_acceleration[3];

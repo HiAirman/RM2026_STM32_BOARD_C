@@ -41,6 +41,7 @@ public:
   int32_t gyro_z_get();
   float get_roll();
   float get_pitch();
+  float debug_get_vector(int number, int axis);
 
 
 private:
@@ -74,15 +75,15 @@ private:
   //积分时间 单位s
   const float integrate_time = 1.0 / 1000.0;
   //滤波常数
-  const float gyro_filter_weight = 0.3;
+  const float gyro_filter_weight = 0.005;
   //gyro_vector加权平均权重
   const float average_weight_gyro = 0.5;
 
   //加速度值 单位 mg
-  float raw_acceleration[3];
+  int32_t raw_acceleration[3];
 
   //角速度值  x y z 顺序 单位 °/s
-  float raw_anglar_velocity[3];
+  int32_t raw_angular_velocity[3];
   float filtered_angular_velocity[3];//需要初始化
 
   //vectors指向天

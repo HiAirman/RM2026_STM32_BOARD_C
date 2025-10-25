@@ -27,9 +27,9 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+#include "Controller.h"
 #include "IMU.h"
 #include "bmi088.h"
-
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -55,6 +55,7 @@ int32_t accel_data[3];
 int32_t gyro_data[3];
 float roll = 0;
 float pitch = 0;
+uint8_t rx_data[32];
 
 /* USER CODE END PV */
 
@@ -103,6 +104,7 @@ int main(void) {
     /* USER CODE BEGIN 2 */
     bmi088_init();
     imu_init();
+    ControllerInit();
     HAL_TIM_Base_Start_IT(&htim6); // 1kHz
     /* USER CODE END 2 */
 

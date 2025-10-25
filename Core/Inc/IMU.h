@@ -6,9 +6,6 @@
 #define RM_C_BOARD_TEST_DEV_IMU_H
 
 #include "main.h"
-#include "spi.h"
-#include "tim.h"
-#include "gpio.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -69,7 +66,6 @@ private:
     //实时更新的解算值 单位 °
     float pitch_ = 1;
     float roll_ = 1;
-
 
     //积分时间 单位s
     const float integrate_time_ = 1.0 / 1000.0;

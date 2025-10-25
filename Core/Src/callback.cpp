@@ -2,9 +2,9 @@
 // Created by HiAir on 2025/10/12.
 //
 
-#include "main.h"
+#include "Controller.h"
 #include "IMU.h"
-
+#include "main.h"
 
 extern int32_t accel_data[3];
 extern int32_t gyro_data[3];
@@ -14,6 +14,7 @@ float vectorxs[3];
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim) {
     if (htim->Instance == TIM6) {
+        //imu Timer Callback Handler
         for (int i = 0; i < 3; i++) {
             vectorxs[i] = imu.debug_get_vector(i, 0);
         }
@@ -31,6 +32,10 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim) {
         for (int i = 0; i < 3; i++) {
             vectorxs[i] = imu.debug_get_vector(i, 0);
         }
+        //controller callback handler
+        controller.TimerCallbackHandler();
     }
 }
-
+void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef* huart, uint16_t Size) {
+    controller.RxCallBackHandler();
+}

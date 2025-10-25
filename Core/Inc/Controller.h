@@ -31,7 +31,7 @@ class Controller {
 public:
     void init();
     bool IsConnected();
-    void RxCallBackHandler();
+    void RxCallBackHandler(uint8_t size);
     void TimerCallbackHandler();
 
 private:

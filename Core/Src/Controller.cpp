@@ -24,7 +24,11 @@ bool Controller::IsConnected() {
     return is_connected_;
 }
 
-void Controller::RxCallBackHandler() {
+void Controller::RxCallBackHandler(uint8_t size) {
+    if (size != 16) {
+        HAL_UARTEx_ReceiveToIdle_DMA(&huart3, rx_buffer_, 32);
+        return;
+    }
     last_tick_ = HAL_GetTick();
     memcpy(rx_data_, rx_buffer_, 32);
     HAL_UARTEx_ReceiveToIdle_DMA(&huart3, rx_buffer_, 32);

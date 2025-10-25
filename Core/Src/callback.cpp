@@ -37,5 +37,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim) {
     }
 }
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef* huart, uint16_t Size) {
-    controller.RxCallBackHandler();
+    if (huart->Instance == USART3) {
+        controller.RxCallBackHandler(Size);
+    }
 }

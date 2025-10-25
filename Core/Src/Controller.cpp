@@ -31,10 +31,14 @@ void Controller::RxCallBackHandler(uint8_t size) {
     }
     last_tick_ = HAL_GetTick();
     memcpy(rx_data_, rx_buffer_, 32);
+    is_data_refreshed = true;
     HAL_UARTEx_ReceiveToIdle_DMA(&huart3, rx_buffer_, 32);
 }
 
 void Controller::TimerCallbackHandler() {
+    if (!is_data_refreshed) {
+        return;
+    }
     rc.ch0 = ((int16_t)rx_data_[0] | ((int16_t)rx_data_[1] << 8)) & 0x07FF;
     rc.ch1 = (((int16_t)rx_data_[1] >> 3) | ((int16_t)rx_data_[2] << 5)) & 0x07FF;
     rc.ch2 = (((int16_t)rx_data_[2] >> 6) | ((int16_t)rx_data_[3] << 2) | ((int16_t)rx_data_[4] << 10)) & 0x07FF;

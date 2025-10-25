@@ -48,6 +48,8 @@ private:
         uint8_t s1;
         uint8_t s2;
     } rc;
+
+    bool is_data_refreshed = false;
 };
 
 extern Controller controller;
